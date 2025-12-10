@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator Pro - Advanced Weighted Average Calculator</title>
+    <style>
+        /* ===== RESET AND VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Black & White Premium Palette */
+            --pure-black: #000000;
+            --pure-white: #ffffff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #eeeeee;
+            --gray-300: #e0e0e0;
+            --gray-400: #bdbdbd;
+            --gray-500: #9e9e9e;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 20px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.04);
+            --shadow-2xl: 0 25px 50px rgba(0,0,0,0.15);
+            
+            /* Transitions */
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* Animation Durations */
+            --animate-fast: 0.3s;
+            --animate-base: 0.5s;
+            --animate-slow: 0.8s;
+        }
+
+        /* ===== SMOOTH SCROLLING ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== TYPOGRAPHY WITH ENHANCED ANIMATIONS ===== */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--pure-white);
+            color: var(--gray-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: var(--pure-black);
+            line-height: 1.3;
+            margin-bottom: 0.5em;
+        }
+
+        h1 { 
+            font-size: 2.5rem; 
+            font-weight: 700;
+            animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+            animation-delay: 0.1s;
+        }
+
+        h2 { 
+            font-size: 2rem;
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.25rem; }
+
+        p {
+            color: var(--gray-700);
+            margin-bottom: 1rem;
+        }
+
+        small {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        /* ===== LAYOUT ANIMATIONS ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 1s ease;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            animation: slideUp 0.6s ease both;
+        }
+
+        /* ===== ENHANCED HEADER ANIMATION ===== */
+        .header {
+            background: linear-gradient(135deg, var(--pure-black) 0%, var(--gray-900) 100%);
+            color: var(--pure-white);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: translate(30%, -30%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .header h1 {
+            color: var(--pure-white);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            background: var(--pure-white);
+            color: var(--pure-black);
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+            animation-delay: 0.2s;
+        }
+
+        .subtitle {
+            color: var(--gray-300);
+            font-size: 1.1rem;
+            font-weight: 400;
+            max-width: 600px;
+            animation: fadeIn 1s ease both;
+            animation-delay: 0.4s;
+        }
+
+        /* ===== ENHANCED CARD ANIMATIONS ===== */
+        .card {
+            background: var(--pure-white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+            margin-bottom: 24px;
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-8px) scale(1.01);
+            border-color: var(--gray-300);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--pure-black);
+            animation: fadeIn 0.6s ease;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--pure-black);
+        }
+
+        .card-icon {
+            color: var(--pure-black);
+            font-size: 1.5rem;
+            transition: transform var(--transition-fast);
+        }
+
+        .card:hover .card-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        /* ===== ENHANCED FORM CONTROLS ===== */
+        .form-group {
+            margin-bottom: 24px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--gray-900);
+            font-size: 0.95rem;
+            transition: color var(--transition-fast);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            background: var(--pure-white);
+            color: var(--gray-900);
+            transition: all var(--transition-base);
+            transform-origin: left;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--pure-black);
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-control::placeholder {
+            color: var(--gray-400);
+            transition: opacity var(--transition-fast);
+        }
+
+        .form-control:focus::placeholder {
+            opacity: 0.5;
+        }
+
+        /* Enhanced Slider */
+        .slider-container {
+            margin-top: 16px;
+            position: relative;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, var(--gray-300) 0%, var(--gray-300) 100%);
+            border-radius: 4px;
+            outline: none;
+            position: relative;
+            transition: background var(--transition-base);
+        }
+
+        .slider:hover {
+            background: linear-gradient(90deg, var(--gray-400) 0%, var(--gray-400) 100%);
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--pure-black);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid var(--pure-white);
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-base);
+            position: relative;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .slider::-webkit-slider-thumb:active {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .slider-value {
+            font-weight: 600;
+            color: var(--pure-black);
+            margin-right: 12px;
+            min-width: 40px;
+            display: inline-block;
+            text-align: center;
+            transition: transform var(--transition-fast);
+        }
+
+        .slider-value.changing {
+            transform: scale(1.2);
+            color: var(--gray-900);
+        }
+
+        /* ===== ENHANCED BUTTONS WITH BETTER ANIMATIONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transform-origin: center;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--pure-black);
+            color: var(--pure-white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background: var(--gray-800);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-2px) scale(1.02);
+            transition: transform 0.1s;
+        }
+
+        .btn-secondary {
+            background: var(--gray-800);
+            color: var(--pure-white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-700);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--pure-black);
+            border: 2px solid var(--pure-black);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-outline:hover {
+            background: var(--pure-black);
+            color: var(--pure-white);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        /* ===== ENHANCED TABLE ANIMATIONS ===== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-200);
+            margin-top: 24px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background: var(--gray-900);
+        }
+
+        th {
+            padding: 18px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--pure-white);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background var(--transition-fast);
+        }
+
+        th:hover {
+            background: var(--gray-800);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: all var(--transition-base);
+            animation: slideInRight 0.5s ease both;
+        }
+
+        tbody tr:nth-child(odd) {
+            animation-delay: calc(0.1s * var(--row-index));
+        }
+
+        tbody tr:hover {
+            background-color: var(--gray-50);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        td {
+            padding: 16px;
+            color: var(--gray-800);
+            transition: color var(--transition-fast);
+        }
+
+        tbody tr:hover td {
+            color: var(--pure-black);
+        }
+
+        .subject-name {
+            font-weight: 500;
+            color: var(--pure-black);
+            transition: transform var(--transition-fast);
+        }
+
+        tbody tr:hover .subject-name {
+            transform: translateX(5px);
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--pure-black);
+            font-size: 0.875rem;
+            min-width: 60px;
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+
+        tbody tr:hover .score-badge {
+            background: var(--pure-black);
+            color: var(--pure-white);
+            border-color: var(--pure-black);
+            transform: scale(1.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            opacity: 0.7;
+            transition: opacity var(--transition-fast);
+        }
+
+        tbody tr:hover .action-buttons {
+            opacity: 1;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-300);
+            background: var(--pure-white);
+            color: var(--gray-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .btn-icon:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .btn-icon:hover {
+            background: var(--gray-100);
+            border-color: var(--gray-400);
+            color: var(--pure-black);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-icon.delete:hover {
+            background: #fee;
+            border-color: #fcc;
+            color: #c00;
+            transform: translateY(-2px) rotate(-5deg);
+        }
+
+        .btn-icon:active {
+            transform: translateY(0);
+            transition: transform 0.1s;
+        }
+
+        /* ===== ENHANCED RESULTS SECTION ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .result-card {
+            background: var(--pure-white);
+            border: 2px solid var(--pure-black);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            text-align: center;
+            transition: all var(--transition-base);
+            animation: pulse 2s infinite;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-2xl);
+            animation: none;
+        }
+
+        .average-display {
+            padding: 30px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .average-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--pure-black), transparent);
+            animation: slideRight 3s linear infinite;
+        }
+
+        .average-value {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--pure-black);
+            line-height: 1;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            transition: all var(--transition-base);
+            display: inline-block;
+        }
+
+        .result-card:hover .average-value {
+            transform: scale(1.1);
+            text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .average-label {
+            font-size: 1rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color var(--transition-base);
+        }
+
+        .result-card:hover .average-label {
+            color: var(--pure-black);
+        }
+
+        .grade-display {
+            background: var(--pure-black);
+            color: var(--pure-white);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grade-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        .grade-display:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .grade-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            transition: transform var(--transition-base);
+        }
+
+        .grade-display:hover .grade-value {
+            transform: scale(1.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-item {
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-200);
+            text-align: center;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--pure-black);
+            transform: scaleX(0);
+            transition: transform var(--transition-base);
+            transform-origin: left;
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            background: var(--pure-white);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--pure-black);
+            margin-bottom: 5px;
+            font-family: 'Courier New', monospace;
+            transition: all var(--transition-base);
+        }
+
+        .stat-item:hover .stat-value {
+            transform: scale(1.2);
+            color: var(--gray-900);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color var(--transition-base);
+        }
+
+        .stat-item:hover .stat-label {
+            color: var(--gray-800);
+        }
+
+        /* ===== ENHANCED EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-500);
+            animation: fadeIn 1s ease;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .empty-state h3 {
+            color: var(--gray-700);
+            margin-bottom: 10px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        /* ===== ENHANCED NOTIFICATION ===== */
+        .notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--pure-white);
+            border: 1px solid var(--gray-300);
+            border-left: 4px solid var(--pure-black);
+            padding: 18px 22px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 400px;
+            transform: translateX(400px) translateY(20px);
+            transition: transform var(--transition-bounce);
+            z-index: 1000;
+            animation: slideInRight 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .notification.show {
+            animation: slideInRight 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .notification.hide {
+            animation: slideOutRight 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .notification.success {
+            border-left-color: #4CAF50;
+        }
+
+        .notification.error {
+            border-left-color: #f44336;
+        }
+
+        .notification.warning {
+            border-left-color: #ff9800;
+        }
+
+        .notification-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .notification-close:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            transform: rotate(90deg);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray-200);
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .footer:hover {
+            color: var(--gray-800);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .average-value {
+                font-size: 3rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .header-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 2rem;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+            }
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== ANIMATION KEYFRAMES ===== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        @keyframes slideRight {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .card {
+                box-shadow: none;
+                border: 1px solid var(--pure-black);
+            }
+            
+            .btn-group {
+                display: none;
+            }
+            
+            body {
+                background: var(--pure-white);
+                color: var(--pure-black);
+                padding: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <h1>
+                <div class="header-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div>
+                    Grade Calculator
+                    <div class="subtitle">Calculate weighted averages • Created by Muhammad Raihansyah Zahari</div>
+                </div>
+            </h1>
+        </header>
+
+        <!-- INPUT SECTION -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit card-icon"></i>
+                        Input Grade Data
+                    </h3>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Subject Name</label>
+                    <input type="text" class="form-control" id="subjectName" placeholder="Example: Mathematics" autocomplete="off">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Grade (0-100)</label>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span class="slider-value" id="sliderValue">0</span>
+                        <input type="range" class="slider" id="scoreSlider" min="0" max="100" value="0">
+                    </div>
+                    <input type="number" class="form-control mt-3" id="subjectScore" min="0" max="100" step="0.1" placeholder="Enter grade">
+                    <small>Use slider or directly input grade between 0-100</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Grade Weight</label>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <button class="btn-icon" id="decreaseWeight" title="Decrease weight">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" class="form-control" id="subjectWeight" min="0.5" max="3" step="0.1" value="1.0" style="text-align: center;">
+                        <button class="btn-icon" id="increaseWeight" title="Increase weight">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <small>Weight determines subject importance in average calculation</small>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="addSubjectBtn">
+                        <i class="fas fa-plus-circle"></i> Add Subject
+                    </button>
+                    <button class="btn btn-outline" id="clearFormBtn">
+                        <i class="fas fa-eraser"></i> Clear Form
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABLE SECTION -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-list card-icon"></i>
+                        Subjects List
+                    </h3>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="position: relative; width: 250px;">
+                            <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gray-500);"></i>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search subjects..." style="padding-left: 40px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="subjectsTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Subject</th>
+                                <th>Grade</th>
+                                <th>Weight</th>
+                                <th>Grade × Weight</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3>No subjects added yet</h3>
+                    <p>Add your first subject using the form above</p>
+                    <button class="btn btn-primary mt-3" id="addFirstSubjectBtn">
+                        <i class="fas fa-plus"></i> Add First Subject
+                    </button>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="calculateBtn">
+                        <i class="fas fa-calculator"></i> Calculate Average
+                    </button>
+                    <button class="btn btn-secondary" id="clearAllBtn">
+                        <i class="fas fa-trash-alt"></i> Clear All Data
+                    </button>
+                    <button class="btn btn-outline" id="exportBtn">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button class="btn btn-outline" id="importBtn">
+                        <i class="fas fa-upload"></i> Import Data
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULTS SECTION -->
+        <section class="section">
+            <div class="card" id="resultsCard" style="display: none;">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-bar card-icon"></i>
+                        Calculation Results
+                    </h3>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="average-display">
+                            <div class="average-label">Weighted Average</div>
+                            <div class="average-value" id="averageValue">0.00</div>
+                            <div class="average-label" id="gradeText">-</div>
+                        </div>
+                        
+                        <div class="grade-display">
+                            <div class="average-label">Grade Point</div>
+                            <div class="grade-value" id="gradeValue">-</div>
+                            <div id="gradeDescription">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4 style="margin-bottom: 24px; text-align: center;">
+                            <i class="fas fa-chart-line"></i> Complete Statistics
+                        </h4>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalSubjects">0</div>
+                                <div class="stat-label">Total Subjects</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="highestScore">0</div>
+                                <div class="stat-label">Highest Grade</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="lowestScore">0</div>
+                                <div class="stat-label">Lowest Grade</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalWeight">0.0</div>
+                                <div class="stat-label">Total Weight</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 24px; padding: 16px; background: var(--gray-50); border-radius: var(--radius-md);">
+                            <div style="font-weight: 500; color: var(--pure-black); margin-bottom: 8px;">Calculation Formula:</div>
+                            <div style="font-family: 'Courier New', monospace; font-size: 14px; color: var(--gray-700);">
+                                Average = Σ(Grade × Weight) ÷ Σ(Weight)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INSTRUCTIONS -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-info-circle card-icon"></i>
+                        How to Use
+                    </h3>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="padding: 20px; background: var(--gray-50); border-radius: var(--radius-md); transition: all var(--transition-base);" class="instruction-card">
+                        <h4 style="margin-bottom: 10px; color: var(--pure-black);">
+                            <i class="fas fa-1"></i> Input Data
+                        </h4>
+                        <p style="font-size: 14px; color: var(--gray-700);">
+                            Enter subject name, grade (0-100), and adjust weight as needed.
+                        </p>
+                    </div>
+                    
+                    <div style="padding: 20px; background: var(--gray-50); border-radius: var(--radius-md); transition: all var(--transition-base);" class="instruction-card">
+                        <h4 style="margin-bottom: 10px; color: var(--pure-black);">
+                            <i class="fas fa-2"></i> Add Data
+                        </h4>
+                        <p style="font-size: 14px; color: var(--gray-700);">
+                            Click "Add Subject" to save. Repeat until all data is collected.
+                        </p>
+                    </div>
+                    
+                    <div style="padding: 20px; background: var(--gray-50); border-radius: var(--radius-md); transition: all var(--transition-base);" class="instruction-card">
+                        <h4 style="margin-bottom: 10px; color: var(--pure-black);">
+                            <i class="fas fa-3"></i> Calculate Average
+                        </h4>
+                        <p style="font-size: 14px; color: var(--gray-700);">
+                            Click "Calculate Average" to see results and complete statistics.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            
+            <p style="margin-top: 8px; font-size: 13px; color: var(--gray-500);">
+                Data is stored locally in your browser • No data is sent to any server
+            </p>
+        </footer>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle" id="notificationIcon"></i>
+        <span id="notificationText">Notification message</span>
+        <button class="notification-close" id="notificationClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script>
+        // ===== CONFIGURATION =====
+        const CONFIG = {
+            APP_NAME: 'Grade Calculator',
+            VERSION: '1.0.0',
+            STORAGE_KEY: 'gradeCalculatorData',
+            MAX_SUBJECTS: 50
+        };
+
+        // ===== STATE =====
+        let subjects = [];
+        let notificationTimeout = null;
+
+        // ===== DOM ELEMENTS =====
+        const elements = {
+            // Input elements
+            subjectName: document.getElementById('subjectName'),
+            subjectScore: document.getElementById('subjectScore'),
+            scoreSlider: document.getElementById('scoreSlider'),
+            sliderValue: document.getElementById('sliderValue'),
+            subjectWeight: document.getElementById('subjectWeight'),
+            
+            // Buttons
+            addSubjectBtn: document.getElementById('addSubjectBtn'),
+            addFirstSubjectBtn: document.getElementById('addFirstSubjectBtn'),
+            clearFormBtn: document.getElementById('clearFormBtn'),
+            calculateBtn: document.getElementById('calculateBtn'),
+            clearAllBtn: document.getElementById('clearAllBtn'),
+            exportBtn: document.getElementById('exportBtn'),
+            importBtn: document.getElementById('importBtn'),
+            decreaseWeight: document.getElementById('decreaseWeight'),
+            increaseWeight: document.getElementById('increaseWeight'),
+            
+            // Table
+            tableBody: document.getElementById('tableBody'),
+            searchInput: document.getElementById('searchInput'),
+            emptyState: document.getElementById('emptyState'),
+            
+            // Results
+            resultsCard: document.getElementById('resultsCard'),
+            averageValue: document.getElementById('averageValue'),
+            gradeValue: document.getElementById('gradeValue'),
+            gradeText: document.getElementById('gradeText'),
+            gradeDescription: document.getElementById('gradeDescription'),
+            totalSubjects: document.getElementById('totalSubjects'),
+            highestScore: document.getElementById('highestScore'),
+            lowestScore: document.getElementById('lowestScore'),
+            totalWeight: document.getElementById('totalWeight'),
+            
+            // Notification
+            notification: document.getElementById('notification'),
+            notificationText: document.getElementById('notificationText'),
+            notificationIcon: document.getElementById('notificationIcon'),
+            notificationClose: document.getElementById('notificationClose')
+        };
+
+        // ===== ENHANCED UTILITY FUNCTIONS =====
+        function showNotification(message, type = 'success', duration = 4000) {
+            // Clear previous notification
+            if (notificationTimeout) {
+                clearTimeout(notificationTimeout);
+                elements.notification.classList.remove('show');
+                elements.notification.classList.add('hide');
+                
+                setTimeout(() => {
+                    elements.notification.classList.remove('hide');
+                }, 300);
+            }
+            
+            // Update icon
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            elements.notificationIcon.className = 'fas ' + (icons[type] || icons.success);
+            elements.notificationText.textContent = message;
+            
+            // Update class
+            elements.notification.className = 'notification';
+            elements.notification.classList.add(type);
+            
+            // Show with animation
+            setTimeout(() => {
+                elements.notification.classList.add('show');
+            }, 50);
+            
+            // Hide after duration
+            notificationTimeout = setTimeout(() => {
+                elements.notification.classList.remove('show');
+                elements.notification.classList.add('hide');
+                
+                setTimeout(() => {
+                    elements.notification.classList.remove('hide');
+                }, 600);
+            }, duration);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatNumber(num, decimals = 2) {
+            return parseFloat(num).toFixed(decimals);
+        }
+
+        // ===== ENHANCED ANIMATION FUNCTIONS =====
+        function animateValue(element, start, end, duration = 1000) {
+            const startTime = performance.now();
+            const step = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function
+                const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+                const value = start + (end - start) * easeOutCubic;
+                
+                element.textContent = formatNumber(value);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            };
+            requestAnimationFrame(step);
+        }
+
+        function addParticleEffect(element, color = '#000') {
+            const rect = element.getBoundingClientRect();
+            const particleCount = 8;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 4 + 2;
+                const angle = (Math.PI * 2 * i) / particleCount;
+                const distance = Math.random() * 20 + 10;
+                
+                particle.style.cssText = `
+                    position: fixed;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1000;
+                    left: ${rect.left + rect.width / 2}px;
+                    top: ${rect.top + rect.height / 2}px;
+                `;
+                
+                document.body.appendChild(particle);
+                
+                // Animate particle
+                const animation = particle.animate([
+                    {
+                        transform: `translate(0, 0) scale(1)`,
+                        opacity: 1
+                    },
+                    {
+                        transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+                        opacity: 0
+                    }
+                ], {
+                    duration: 600,
+                    easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                });
+                
+                animation.onfinish = () => particle.remove();
+            }
+        }
+
+        function shakeElement(element) {
+            element.style.animation = 'none';
+            setTimeout(() => {
+                element.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
+            }, 10);
+            
+            // Remove animation after it completes
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 500);
+        }
+
+        // Add shake animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                10%, 90% { transform: translate3d(-1px, 0, 0); }
+                20%, 80% { transform: translate3d(2px, 0, 0); }
+                30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+                40%, 60% { transform: translate3d(4px, 0, 0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ===== DATA MANAGEMENT =====
+        function loadFromStorage() {
+            const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
+            if (saved) {
+                try {
+                    subjects = JSON.parse(saved);
+                    renderTable();
+                    updateStats();
+                    showNotification('Data successfully loaded from local storage', 'success');
+                } catch (e) {
+                    console.error('Failed to load data:', e);
+                }
+            }
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(subjects));
+            } catch (e) {
+                console.error('Failed to save data:', e);
+            }
+        }
+
+        // ===== ENHANCED SUBJECT MANAGEMENT =====
+        function addSubject() {
+            const name = elements.subjectName.value.trim();
+            const score = parseFloat(elements.subjectScore.value);
+            const weight = parseFloat(elements.subjectWeight.value) || 1.0;
+            
+            // Validation with animations
+            if (!name) {
+                showNotification('Subject name cannot be empty', 'error');
+                shakeElement(elements.subjectName);
+                elements.subjectName.focus();
+                return;
+            }
+            
+            if (isNaN(score) || score < 0 || score > 100) {
+                showNotification('Grade must be between 0 and 100', 'error');
+                shakeElement(elements.subjectScore);
+                elements.subjectScore.focus();
+                return;
+            }
+            
+            if (subjects.length >= CONFIG.MAX_SUBJECTS) {
+                showNotification(`Maximum ${CONFIG.MAX_SUBJECTS} subjects allowed`, 'warning');
+                return;
+            }
+            
+            // Create subject object
+            const subject = {
+                id: Date.now() + Math.random(),
+                name: name,
+                score: Math.min(100, Math.max(0, score)),
+                weight: Math.min(3, Math.max(0.5, weight)),
+                createdAt: new Date().toISOString()
+            };
+            
+            // Add to array
+            subjects.push(subject);
+            
+            // Update UI with animations
+            renderTable();
+            updateStats();
+            saveToStorage();
+            
+            // Add particle effect
+            addParticleEffect(elements.addSubjectBtn, '#000');
+            
+            // Reset form
+            clearForm();
+            
+            // Notification with success
+            showNotification(`"${name}" successfully added`, 'success');
+        }
+
+        function deleteSubject(id) {
+            const subject = subjects.find(s => s.id === id);
+            if (!subject) return;
+            
+            // Animate deletion
+            const row = document.querySelector(`[data-id="${id}"]`);
+            if (row) {
+                row.style.transform = 'translateX(100px)';
+                row.style.opacity = '0';
+                row.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                
+                setTimeout(() => {
+                    subjects = subjects.filter(s => s.id !== id);
+                    renderTable();
+                    updateStats();
+                    saveToStorage();
+                    showNotification(`"${subject.name}" has been deleted`, 'success');
+                }, 300);
+            } else {
+                subjects = subjects.filter(s => s.id !== id);
+                renderTable();
+                updateStats();
+                saveToStorage();
+                showNotification(`"${subject.name}" has been deleted`, 'success');
+            }
+        }
+
+        function editSubject(id) {
+            const subject = subjects.find(s => s.id === id);
+            if (!subject) return;
+            
+            // Fill form with data to edit
+            elements.subjectName.value = subject.name;
+            elements.subjectScore.value = subject.score;
+            elements.scoreSlider.value = subject.score;
+            elements.sliderValue.textContent = subject.score;
+            elements.subjectWeight.value = subject.weight;
+            
+            // Highlight the form
+            elements.subjectName.style.backgroundColor = 'var(--gray-100)';
+            setTimeout(() => {
+                elements.subjectName.style.backgroundColor = '';
+            }, 1000);
+            
+            // Remove from array
+            subjects = subjects.filter(s => s.id !== id);
+            
+            // Update UI
+            renderTable();
+            updateStats();
+            saveToStorage();
+            
+            // Focus on name input
+            elements.subjectName.focus();
+            
+            showNotification(`Editing "${subject.name}"`, 'warning');
+        }
+
+        function clearAllData() {
+            if (subjects.length === 0) {
+                showNotification('No data to delete', 'warning');
+                return;
+            }
+            
+            // Enhanced confirmation with animation
+            const rows = document.querySelectorAll('#tableBody tr');
+            rows.forEach((row, index) => {
+                setTimeout(() => {
+                    row.style.transform = 'translateX(100px)';
+                    row.style.opacity = '0';
+                }, index * 50);
+            });
+            
+            setTimeout(() => {
+                subjects = [];
+                renderTable();
+                updateStats();
+                saveToStorage();
+                showNotification('All data has been deleted', 'success');
+            }, rows.length * 50 + 300);
+        }
+
+        function clearForm() {
+            // Animate form clearing
+            elements.subjectName.style.transform = 'translateY(-5px)';
+            elements.subjectScore.style.transform = 'translateY(-5px)';
+            
+            setTimeout(() => {
+                elements.subjectName.value = '';
+                elements.subjectScore.value = '';
+                elements.scoreSlider.value = 0;
+                elements.sliderValue.textContent = '0';
+                elements.subjectWeight.value = 1.0;
+                
+                elements.subjectName.style.transform = '';
+                elements.subjectScore.style.transform = '';
+                
+                elements.subjectName.focus();
+            }, 150);
+        }
+
+        // ===== ENHANCED TABLE RENDERING =====
+        function renderTable() {
+            const tbody = elements.tableBody;
+            
+            if (subjects.length === 0) {
+                elements.emptyState.style.display = 'block';
+                tbody.innerHTML = '';
+                return;
+            }
+            
+            elements.emptyState.style.display = 'none';
+            
+            let html = '';
+            subjects.forEach((subject, index) => {
+                const weightedScore = (subject.score * subject.weight).toFixed(1);
+                
+                html += `
+                    <tr data-id="${subject.id}" style="--row-index: ${index}; animation-delay: calc(0.05s * ${index});">
+                        <td>${index + 1}</td>
+                        <td class="subject-name">${escapeHtml(subject.name)}</td>
+                        <td><span class="score-badge">${subject.score.toFixed(1)}</span></td>
+                        <td>${subject.weight.toFixed(1)}</td>
+                        <td><span class="score-badge">${weightedScore}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon" onclick="editSubject('${subject.id}')" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon delete" onclick="deleteSubject('${subject.id}')" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        // ===== ENHANCED CALCULATIONS =====
+        function calculateAverage() {
+            if (subjects.length === 0) {
+                showNotification('Please add subjects first', 'warning');
+                shakeElement(elements.calculateBtn);
+                return;
+            }
+            
+            let totalWeightedScore = 0;
+            let totalWeight = 0;
+            let highest = -Infinity;
+            let lowest = Infinity;
+            
+            subjects.forEach(subject => {
+                const weightedScore = subject.score * subject.weight;
+                totalWeightedScore += weightedScore;
+                totalWeight += subject.weight;
+                
+                if (subject.score > highest) highest = subject.score;
+                if (subject.score < lowest) lowest = subject.score;
+            });
+            
+            const average = totalWeightedScore / totalWeight;
+            const grade = getGrade(average);
+            
+            // Animate average value change
+            const currentAverage = parseFloat(elements.averageValue.textContent) || 0;
+            animateValue(elements.averageValue, currentAverage, average, 1000);
+            
+            // Update results with animations
+            elements.gradeValue.textContent = grade.letter;
+            elements.gradeText.textContent = grade.label;
+            elements.gradeDescription.textContent = grade.description;
+            
+            // Show results card with animation
+            if (elements.resultsCard.style.display === 'none') {
+                elements.resultsCard.style.display = 'block';
+                elements.resultsCard.style.animation = 'slideUp 0.6s ease';
+            }
+            
+            // Add particle effect to calculate button
+            addParticleEffect(elements.calculateBtn, '#4CAF50');
+            
+            // Scroll to results
+            elements.resultsCard.scrollIntoView({ behavior: 'smooth' });
+            
+            showNotification(`Calculation complete! Average: ${formatNumber(average)} (${grade.letter})`, 'success');
+        }
+
+        function updateStats() {
+            if (subjects.length === 0) {
+                elements.totalSubjects.textContent = '0';
+                elements.highestScore.textContent = '0';
+                elements.lowestScore.textContent = '0';
+                elements.totalWeight.textContent = '0.0';
+                return;
+            }
+            
+            const scores = subjects.map(s => s.score);
+            const highest = Math.max(...scores);
+            const lowest = Math.min(...scores);
+            const totalWeight = subjects.reduce((sum, s) => sum + s.weight, 0);
+            
+            // Animate stat changes
+            elements.totalSubjects.textContent = subjects.length;
+            elements.highestScore.textContent = formatNumber(highest, 1);
+            elements.lowestScore.textContent = formatNumber(lowest, 1);
+            elements.totalWeight.textContent = formatNumber(totalWeight, 1);
+        }
+
+        function getGrade(score) {
+            if (score >= 90) return { 
+                letter: 'A', 
+                label: 'Excellent', 
+                description: 'Outstanding performance' 
+            };
+            if (score >= 80) return { 
+                letter: 'B', 
+                label: 'Good', 
+                description: 'Above average performance' 
+            };
+            if (score >= 70) return { 
+                letter: 'C', 
+                label: 'Average', 
+                description: 'Meets minimum requirements' 
+            };
+            if (score >= 60) return { 
+                letter: 'D', 
+                label: 'Below Average', 
+                description: 'Needs improvement' 
+            };
+            return { 
+                letter: 'F', 
+                label: 'Fail', 
+                description: 'Does not meet requirements' 
+            };
+        }
+
+        // ===== ENHANCED EXPORT/IMPORT =====
+        function exportData() {
+            if (subjects.length === 0) {
+                showNotification('No data to export', 'warning');
+                return;
+            }
+            
+            const data = {
+                subjects: subjects,
+                exportedAt: new Date().toISOString(),
+                app: CONFIG.APP_NAME,
+                version: CONFIG.VERSION
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `grades-export-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            
+            // Add click animation
+            a.style.transform = 'scale(0.8)';
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            // Add success animation
+            addParticleEffect(elements.exportBtn, '#2196F3');
+            showNotification('Data successfully exported to JSON file', 'success');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = event => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        
+                        if (!data.subjects || !Array.isArray(data.subjects)) {
+                            throw new Error('Invalid file format');
+                        }
+                        
+                        // Validate data
+                        const validSubjects = data.subjects.filter(subject => 
+                            subject.name && 
+                            typeof subject.score === 'number' &&
+                            typeof subject.weight === 'number'
+                        );
+                        
+                        if (validSubjects.length === 0) {
+                            throw new Error('No valid data found');
+                        }
+                        
+                        // Animate import
+                        elements.importBtn.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            elements.importBtn.style.transform = '';
+                        }, 300);
+                        
+                        subjects = validSubjects.slice(0, CONFIG.MAX_SUBJECTS);
+                        renderTable();
+                        updateStats();
+                        saveToStorage();
+                        
+                        // Add success animation
+                        addParticleEffect(elements.importBtn, '#4CAF50');
+                        showNotification(`${validSubjects.length} subjects successfully imported`, 'success');
+                        
+                    } catch (error) {
+                        showNotification('Failed to import data. Please ensure valid JSON format.', 'error');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            // Trigger file input with animation
+            input.click();
+        }
+
+        // ===== ENHANCED EVENT LISTENERS =====
+        function initEventListeners() {
+            // Main buttons
+            elements.addSubjectBtn.addEventListener('click', addSubject);
+            elements.addFirstSubjectBtn.addEventListener('click', addSubject);
+            elements.clearFormBtn.addEventListener('click', clearForm);
+            elements.calculateBtn.addEventListener('click', calculateAverage);
+            elements.clearAllBtn.addEventListener('click', clearAllData);
+            elements.exportBtn.addEventListener('click', exportData);
+            elements.importBtn.addEventListener('click', importData);
+            
+            // Weight controls with enhanced feedback
+            elements.decreaseWeight.addEventListener('click', () => {
+                let value = parseFloat(elements.subjectWeight.value) || 1.0;
+                value = Math.max(0.5, value - 0.1);
+                elements.subjectWeight.value = value.toFixed(1);
+                
+                // Animation feedback
+                elements.decreaseWeight.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    elements.decreaseWeight.style.transform = '';
+                }, 150);
+            });
+            
+            elements.increaseWeight.addEventListener('click', () => {
+                let value = parseFloat(elements.subjectWeight.value) || 1.0;
+                value = Math.min(3.0, value + 0.1);
+                elements.subjectWeight.value = value.toFixed(1);
+                
+                // Animation feedback
+                elements.increaseWeight.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    elements.increaseWeight.style.transform = '';
+                }, 150);
+            });
+            
+            // Enhanced slider interaction
+            elements.scoreSlider.addEventListener('input', function() {
+                elements.subjectScore.value = this.value;
+                elements.sliderValue.textContent = this.value;
+                
+                // Visual feedback
+                elements.sliderValue.classList.add('changing');
+                setTimeout(() => {
+                    elements.sliderValue.classList.remove('changing');
+                }, 300);
+            });
+            
+            elements.subjectScore.addEventListener('input', function() {
+                elements.scoreSlider.value = this.value;
+                elements.sliderValue.textContent = this.value;
+            });
+            
+            // Enhanced keyboard interactions
+            elements.subjectName.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addSubject();
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                }
+            });
+            
+            elements.subjectScore.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addSubject();
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                }
+            });
+            
+            // Enhanced search with debounce
+            let searchTimeout;
+            elements.searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const query = this.value.toLowerCase();
+                    const rows = document.querySelectorAll('#tableBody tr');
+                    
+                    rows.forEach((row, index) => {
+                        const text = row.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            row.style.display = '';
+                            row.style.animation = `fadeIn 0.3s ease ${index * 0.05}s both`;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }, 300);
+            });
+            
+            // Close notification
+            elements.notificationClose.addEventListener('click', () => {
+                elements.notification.classList.remove('show');
+                elements.notification.classList.add('hide');
+                
+                setTimeout(() => {
+                    elements.notification.classList.remove('hide');
+                }, 600);
+            });
+            
+            // Enhanced instruction cards hover
+            document.querySelectorAll('.instruction-card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-5px)';
+                    card.style.boxShadow = 'var(--shadow-lg)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                    card.style.boxShadow = '';
+                });
+            });
+            
+            // Load data on first load
+            window.addEventListener('load', function() {
+                loadFromStorage();
+                
+                // Animated focus on input
+                setTimeout(() => {
+                    elements.subjectName.focus();
+                    elements.subjectName.style.boxShadow = '0 0 0 3px rgba(0,0,0,0.1)';
+                    setTimeout(() => {
+                        elements.subjectName.style.boxShadow = '';
+                    }, 1000);
+                }, 500);
+                
+                // Welcome message with delay
+                setTimeout(() => {
+                    showNotification('Welcome! Start calculating your grades and enjoy our features.', 'info', 3000);
+                }, 1000);
+                
+                // Initial animations for cards
+                document.querySelectorAll('.card').forEach((card, index) => {
+                    card.style.animationDelay = `${index * 0.1}s`;
+                });
+            });
+            
+            // Add hover effects to all buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    btn.style.transform = 'translateY(-2px)';
+                });
+                
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                });
+            });
+        }
+
+        // ===== INITIALIZATION =====
+        initEventListeners();
+        
+        // Export functions to global scope
+        window.editSubject = editSubject;
+        window.deleteSubject = deleteSubject;
+        
+        // Add initial load animation
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
